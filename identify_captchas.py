@@ -69,11 +69,12 @@ class Captcha(object):
         returns:
             image_binarized: binarized images with only 0s and 1s.
         """
-        # calculate brightness based on RGB values
+        # convert image to grayscale based on RGB values
         # formula reference: 
-        # https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.709-6-201506-I!!PDF-E.pdf
-        image_raw = 0.2126 * image_raw[:,:,0] + 0.7152 * image_raw[:,:,1] \
-                    + 0.0722 * image_raw[:,:,2]
+        # https://www.baeldung.com/cs/convert-rgb-to-grayscale
+        # alternative: image_raw = 0.2126 * image_raw[:,:,0] + 0.7152 * image_raw[:,:,1] \
+        #             + 0.0722 * image_raw[:,:,2] if we know order is RGB
+        image_raw = np.sum(image_raw,axis=2) / 3
         # if pixel value > 127, pixel value is 1 that stands for white (background),
         # otherwise 0.
         image_binarized = (image_raw > 127).astype(int)
